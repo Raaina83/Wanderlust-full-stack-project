@@ -1,0 +1,251 @@
+<% layout("/layouts/boilerplate") %>
+<!-- <div id="control-bar"> -->
+    <div id="filters">
+        <div class="wrap-icon"><i class="fa-solid fa-chevron-left" id="left-arrow"></i></div>
+        <form id = "icon-filter" action="/listings" method="get" class="wrapper">
+            <!-- <div class="wrapper"> -->
+
+                <div class="wrap-filter">
+                    <label for="beach" class="tab">
+                        <input type="radio" name="category" value="beach" id="beach">  
+                        <div class="filter" id="Beach"> 
+                            <i class="fa-solid fa-umbrella-beach"></i>
+                            <p>Beach</p>
+                        </div>
+                    </label>
+            
+                    <label for="camping">
+                        <input type="radio" name="category" value="camping" id="camping">
+                        <div class="filter" id="Camping">
+                            <i class="fa-solid fa-campground"></i>
+                            <p>Camping</p>
+                        </div>
+                    </label>
+            
+                    <label for="boats">
+                        <input type="radio" name="category" value="boats" id="boats">
+                        <div class="filter" id="Boats">
+                            <i class="fa-solid fa-sailboat"></i>
+                            <p>Boats</p>
+                        </div>
+                    </label>
+            
+                    <label for="castles">
+                        <input type="radio" name="category"  value="castles" id="castles">
+                        <div class="filter" id="Castles">
+                            <i class="fa-brands fa-fort-awesome"></i>
+                            <p>Castles</p>
+                        </div>
+                    </label>
+            
+                    <label for="amazing-pools">
+                        <input type="radio" name="category"  value="amazing-pools" id="amazing-pools">
+                        <div class="filter" id="Amazing-pools">
+                            <i class="fa-solid fa-water-ladder"></i>
+                            <p>Amazing Pools</p>
+                        </div>
+                    </label>
+            
+                    <label for="iconic-cities">
+                        <input type="radio" name="category" id="iconic-cities" value="iconic-cities">
+                        <div class="filter" id="Iconic-cities">
+                            <i class="fa-solid fa-city"></i>
+                            <p>Iconic Cities</p>
+                        </div>
+                    </label>
+            
+                    <label for="arctic">
+                        <input type="radio" name="category"  value="arctic" id="arctic">
+                        <div class="filter" id="Arctic">
+                            <i class="fa-regular fa-snowflake"></i>
+                            <p>Arctic</p>
+                        </div>
+                    </label>
+            
+                    <label for="skiing">
+                        <input type="radio" name="category" value="skiing" id="skiing">
+                        <div class="filter" id="Skiing">
+                            <i class="fa-solid fa-person-skiing"></i>
+                            <p>Skiing</p>
+                        </div>
+                    </label>
+            
+                    <label for="bed-bread">
+                        <input type="radio" name="category" id="bed-bread" value="bed-bread">
+                        <div class="filter" id="Bread">
+                            <i class="fa-solid fa-mug-saucer"></i>
+                            <p>Bread &amp; Breakfast</p>
+                        </div>
+                    </label>
+
+                    <label for="towers">
+                        <input type="radio" name="category" onclick="submitForm()" value="towers" id="towers">
+                        <div class="filter" id="Towers">
+                            <i class="fa-solid fa-tower-observation"></i>
+                            <p>Towers</p>
+                        </div>
+                    </label>
+                    <label for="art">
+                        <input type="radio" name="category" value="art" id="art">
+                        <div class="filter" id="Art">
+                            <i class="fa-solid fa-palette"></i>
+                            <p>Creative spaces</p>
+                        </div>
+                    </label>
+                    <label for="tropical">
+                        <input type="radio" name="category" value="tropical" id="tropical">
+                        <div class="filter" id="Tropical">
+                            <i class="fa-brands fa-pagelines"></i>
+                            <p>Tropical</p>
+                        </div>
+                    </label>
+                    <label for="golf">
+                        <input type="radio" name="category" value="golf" id="golf">
+                        <div class="filter" id="Golf">
+                            <i class="fa-solid fa-golf-ball-tee"></i>
+                            <p>Golf</p>
+                        </div>
+                    </label>
+                    
+                </div>
+            <!-- </div> -->
+        </form>
+
+        <div class="wrap-icon"><i class="fa-solid fa-chevron-right" id="right-arrow"></i></div>
+
+        <div class="tax-div">
+            <div class="tax-toggle mb-3">
+            <div class="form-check-reverse form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                <label class="form-check-label" for="flexSwitchCheckDefault">Display total before taxes</label>
+            </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
+    <% for(let listing of allListing){ %>
+        <a class="listing-link" href="listings/<%= listing._id %>">
+        <div class="card col listing-card">
+        <img src="<%= listing.image.url %>" class="card-img-top" alt="listing-img" />   
+            <div class="card-img-overlay">
+            </div>
+        <div class="card-body">
+            <p class="card-text">
+                <p><b><%=listing.title%></b></p>
+                &#8377; <%=listing.price.toLocaleString("en-In")%> night
+                <i class="tax-info">&nbsp; &nbsp;+17% GST</i>
+            </p>
+        </div>
+        </div>
+        </a>
+    <% } %>
+    </div>
+
+    <script>
+        let taxSwitch = document.getElementById("flexSwitchCheckDefault");
+        let inputs = document.querySelectorAll(".wrap-filter input"); 
+        let form  = document.getElementById("icon-filter");
+        let req = new XMLHttpRequest(); 
+
+
+        
+        taxSwitch.addEventListener("click", () =>{
+            let taxInfo = document.getElementsByClassName("tax-info");
+            for(info of taxInfo){
+            if(info.style.display != "inline"){
+                info.style.display = "inline";
+            } else{
+                info.style.display = "none";
+            }
+            }
+        })
+
+        let handleSubmit = (event) => {
+            event.preventDefault();
+            console.log("vcjkwbdlwh");
+            console.log(event.target);
+            let active = document.querySelector("active");
+            active.classList.remove("active");
+        }
+
+        inputs.forEach(input =>{
+            input.addEventListener("click", (event) =>{
+                // console.log(event);
+                // selected(event);
+                // let inp = document.getElementById(event.target.id);
+                // let prevActive = document.querySelector(".active");
+                // console.log(prevActive);
+                // prevActive.classList.remove("active");
+                // console.log(inp);
+                // let selected = inp.parentElement;
+                // console.log(selected);
+                // selected.classList.add("active");
+                let form  = document.getElementById("icon-filter");
+                form.submit((event) =>{
+                    event.preventDefault();
+                });
+                // event.stopPropagation();
+                // form.stopPropagation();
+            })
+        })
+
+        function selected(event){
+            let inp = document.getElementById(event.target.id);
+            let prevActive = document.querySelector(".active");
+            console.log(prevActive);
+            prevActive.classList.remove("active");
+            console.log(inp);
+            let selected = inp.nextElementSibling;
+            selected.classList.add("active");
+        }
+
+        // function mainEvent(event){
+        //     console.log(event.target);
+        //     event.preventDefault();
+        //     selected(event);
+        //     submitForm(event);
+        // }
+
+        const wrapFilter = document.querySelector(".wrapper");
+        const allIcons = document.querySelectorAll(".filter");
+        const filter = document.querySelector(".wrap-filter");
+        const wrapIcons  = document.querySelectorAll(".wrap-icon i");
+
+        let isDragging  = false;
+
+        const handleIcons = () =>{
+            let scrollVal = Math.round(wrapFilter.scrollLeft);
+            let maxScroll = wrapFilter.scrollWidth - wrapFilter.clientWidth;
+            wrapIcons[0].parentElement.style.display = scrollVal > 0 ? "flex" : "none";
+            wrapIcons[1].parentElement.style.display = maxScroll > scrollVal ? "flex" : "none";
+        }
+
+        wrapIcons.forEach(icon =>{
+            icon.addEventListener("click",() =>{
+                wrapFilter.scrollLeft += icon.id === "left-arrow" ? -250 : 250;
+                setTimeout(() => handleIcons(), 500);
+            });
+        });
+
+
+        let dragging = (e) =>{
+            console.log("dragging");
+            if(!isDragging) return;
+            wrapFilter.classList.add("dragging");
+            wrapFilter.scrollLeft -= e.movementX;
+        }
+
+        let dragStop = () =>{
+            isDragging = false;
+            wrapFilter.classList.remove("dragging");
+        }
+
+        wrapFilter.addEventListener("mousedown", () => isDragging = true);
+        wrapFilter.addEventListener("mousemove", dragging);
+        wrapFilter.addEventListener("mouseup", dragStop);
+
+
+    </script>
