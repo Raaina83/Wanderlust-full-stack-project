@@ -34,5 +34,9 @@ router
 //Update route(GET-form)
 router.get("/:id/edit", isLoggedIn ,checkOwner,wrapAsync(listingController.renderUpdateForm));
 
+router.get("/", (req,res)=>{
+    res.redirect("/listings");
+});
+
 
 module.exports = router;
