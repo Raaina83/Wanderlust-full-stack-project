@@ -7,14 +7,10 @@ module.exports.index = async(req,res,next) =>{
     let allListing;
     if(req.query.search){
         const search = req.query.search;
-        console.log(req.query.search)
 
          allListing = await Listing.find({title: {$regex: ".*" + search + ".*"}});
-         console.log(allListing);
     }
     else if(req.query.category){
-        // console.log("inside query");
-        // console.log(req.query.category);
          allListing= await Listing.find({category: req.query.category});
     } else{
          allListing= await Listing.find({}); 
@@ -53,8 +49,7 @@ module.exports.postNew = async (req,res,next) =>{
     newListing.image = {url,filename};
     newListing.geometry = coordinates.body.features[0].geometry;
     let savedListing = await newListing.save(); 
-    console.log(req.body.listing.category);
-    console.log(savedListing);
+    // console.log(savedListing);
     req.flash("success", "New Listing Created!");
     res.redirect("/listings");
 };
@@ -83,6 +78,6 @@ module.exports.postUpdate = async(req,res,next) =>{
 module.exports.delete = async (req,res,next) =>{
     let {id} = req.params;
     let deleted = await Listing.findByIdAndDelete(id);
-    console.log(deleted);
+    // console.log(deleted);
     res.redirect("/listings");
 };

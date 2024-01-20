@@ -77,8 +77,6 @@ passport.use(new GoogleStrategy({
     clientSecret: process.env.CLIENT_SECRET,
     callbackURL: process.env.CALLBACK_URL
 }, async(accessToken,refreshToken, profile, done) => {
-    // console.log(profile);
-    // console.log('username-->', profile.username);
     const newUser = {
         email: profile.emails[0].value,
         username: profile.name.givenName,
