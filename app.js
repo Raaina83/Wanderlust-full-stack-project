@@ -13,11 +13,13 @@ const MongoStore = require('connect-mongo');
 const flash = require('connect-flash');
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const User = require("./models/user.js");
 
 const listings = require("./routes/listing.js");
 const reviews = require("./routes/review.js");
 const users = require("./routes/user.js");
+const { func } = require('joi');
 
 // const MONGO_URL="mongodb://127.0.0.1:27017/wanderlust";
 const dbURL = process.env.ATLAS_URL;
@@ -70,14 +72,58 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
+passport.use(new GoogleStrategy({
+    clientID: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
+    callbackURL: process.env.CALLBACK_URL
+}, async(accessToken,refreshToken, profile, done) => {
+    // console.log(profile);
+    // console.log('username-->', profile.username);
+    const newUser = {
+        email: profile.emails[0].value,
+        username: profile.name.givenName,
+        googleId: profile.id,
+    }
 
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
+    try{
+        let user = await User.findOne({googleId: profile.id});
+
+        if(user){
+            done(null, user);
+        } else{
+            user = await User.create(newUser);
+            done(null, user);
+        }
+    } catch(err){
+        console.log(err);
+    }
+}))
+
+// passport.serializeUser((user, done) => {
+//     done(null, user.id);
+// });
+// passport.deserializeUser(function(id, done) {
+//     User.findById(id, function(err, user) {
+//         done(err, user);
+//     });
+// });
+
+// passport.serializeUser(User.serializeUser());
+// passport.deserializeUser(User.deserializeUser());
+
+passport.serializeUser(function(user, done) {
+    done(null, user);
+  });
+  
+  passport.deserializeUser(function(user, done) {
+    done(null, user);
+  });
 
 app.use((req,res,next) =>{
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
     res.locals.currUser = req.user;
+    console.log(res.locals.currUser);
     next();
 });
 

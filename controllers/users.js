@@ -43,3 +43,8 @@ module.exports.logout = (req,res) =>{
         }
     });
 };
+
+module.exports.googleLogin = (req,res) =>{
+    req.flash("success", "Welcome to Wanderlust");
+    res.redirect("/listings");
+}

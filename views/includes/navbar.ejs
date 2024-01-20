@@ -34,10 +34,12 @@
 
         <!-- <div class="navbar-search"> -->
         <!-- <form class="d-flex" role="search"> -->
+      <form method="get" action="/listings" role="search" id="search-form">
         <div class="navbar-input">
-            <input class="me-2 navbar-search-input" placeholder="Search Destinations" type="text">
+            <input class="me-2 navbar-search-input" placeholder="Search Destinations" type="text" name="search" id="search">
             <div class="navbar-search-button"><i class="fa-solid fa-magnifying-glass"></i></div>
         </div>
+      </form>
         <!-- </form> -->
         <!-- </div> -->
 
@@ -49,15 +51,23 @@
               <i class="fa-regular fa-user"></i>
             </button>
             <ul class="dropdown-menu">
-              <% if(!currUser) {%>
+              <%if(!currUser) {%>
               <li><a class="dropdown-item" href="/signup">Sign Up</a></li>
               <li><a class="dropdown-item" href="/login">Log In</a></li>
               <% }  else {%>
-              <li><a class="dropdown-item" href="/logout">Log Out</a></li>
-              <% } %>
+               <li><a class="dropdown-item" href="/logout">Log Out</a></li>
+              <% } %> 
             </ul>
           </div>
         </div>
       </div>
     <!-- </div> -->
   </div>
+
+  <script>
+    let serachButton = document.querySelector('.navbar-search-button');
+    serachButton.addEventListener("click", () =>{
+      let form = document.getElementById('search-form');
+      form.submit();
+    })
+  </script>

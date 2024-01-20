@@ -360,6 +360,32 @@ footer{
     height: 15vw;
 }
 
+.login-google{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 4rem !important;
+    width: 10rem !important;
+    border: 1px solid black;
+    border-radius: 0.8rem;
+    margin: auto;
+}
+
+.login-google a{
+    text-decoration: none;
+    color: #222222;
+}
+
+.login-google i{
+    color: #fe424d;
+    font-size: 2rem;
+    margin-right: 0.5rem;
+}
+
+.login-google:hover{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
 @media (max-width: 1000px) {
     #navbarNav{
         display: none;

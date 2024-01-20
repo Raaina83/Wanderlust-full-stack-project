@@ -1,12 +1,10 @@
 const express = require("express");
-const { route } = require("./listing");
 const router = express.Router();
-const User = require("../models/user.js");
 const wrapAsync = require("../utils/wrapAsync");
 const passport = require("passport");
 const {saveRedirectUrl} = require("../middlewares.js");
 const userController = require("../controllers/users.js");
-const review = require("../models/review");
+
 
 router
     .route("/signup")
@@ -25,6 +23,12 @@ router
     userController.postLogin);
 
 router.get("/logout",userController.logout);
+
+router.get("/auth/google", passport.authenticate("google", {scope: ["profile", "email"]}));
+
+router.get('/auth/google/callback', 
+  passport.authenticate('google', { failureRedirect: '/login' }),
+  userController.googleLogin);
 
 router.get("/", (req,res)=>{
     res.redirect("/listings");
