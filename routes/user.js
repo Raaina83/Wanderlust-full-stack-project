@@ -4,6 +4,7 @@ const wrapAsync = require("../utils/wrapAsync");
 const passport = require("passport");
 const {saveRedirectUrl} = require("../middlewares.js");
 const userController = require("../controllers/users.js");
+const { func } = require("joi");
 
 
 router
@@ -28,7 +29,10 @@ router.get("/auth/google", passport.authenticate("google", {scope: ["profile", "
 
 router.get('/auth/google/callback', 
   passport.authenticate('google', { failureRedirect: '/login' }),
-  userController.googleLogin);
+  function(req,res){
+    console.log("authorised");
+    res.redirect('/listings');
+  });
 
 router.get("/", (req,res)=>{
     res.redirect("/listings");

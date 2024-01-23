@@ -75,7 +75,7 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.use(new GoogleStrategy({
     clientID: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
-    callbackURL: process.env.CALLBACK_URL
+    callbackURL: '/auth/google/callback',
 }, async(accessToken,refreshToken, profile, done) => {
     const newUser = {
         email: profile.emails[0].value,
@@ -85,6 +85,7 @@ passport.use(new GoogleStrategy({
 
     try{
         let user = await User.findOne({googleId: profile.id});
+        console.log(user);
 
         if(user){
             done(null, user);
@@ -121,7 +122,6 @@ app.use((req,res,next) =>{
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
     res.locals.currUser = req.user;
-    console.log(res.locals.currUser);
     next();
 });
 
