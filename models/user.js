@@ -15,6 +15,10 @@ const userSchema = new Schema({
     username: {
         type: String,
         required: true,
+    },
+    image:{
+        url: String,
+        filename: String
     }
 });
 

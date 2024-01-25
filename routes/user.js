@@ -29,10 +29,10 @@ router.get("/auth/google", passport.authenticate("google", {scope: ["profile", "
 
 router.get('/auth/google/callback', 
   passport.authenticate('google', { failureRedirect: '/login' }),
-  function(req,res){
-    console.log("authorised");
-    res.redirect('/listings');
-  });
+  userController.googleLogin
+)
+
+router.get('/profile',userController.profile);
 
 router.get("/", (req,res)=>{
     res.redirect("/listings");

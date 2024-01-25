@@ -1,0 +1,17 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="profile">
+    <div class="profile-left">
+        <div class="profile-image"><p>Image</p></div>
+        <p class="profile-username"><%=user.username%> &nbsp; &nbsp; Pronouns</p>
+        <button class="profile-edit-btn">Edit Profile</button>
+    </div>
+    <div class="profile-right">
+        <h3>Listings</h3>
+        <% for(let Listing of userListings){ %>
+            <div class="profile-listing-card">
+            <a href="/listings/<%=Listing._id%>" class="listing"><%=Listing.title%></a>
+            </div>
+        <% } %>
+    </div>
+</div>

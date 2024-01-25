@@ -1,4 +1,5 @@
 const User = require("../models/user.js");
+const Listing = require("../models/listing.js");
 
 module.exports.signupForm  = (req,res) =>{
     res.render("users/signup.ejs");
@@ -43,6 +44,13 @@ module.exports.logout = (req,res) =>{
         }
     });
 };
+
+module.exports.profile = async(req,res) => {
+    let user = await User.findById(res.locals.currUser._id);
+    let userListings = await Listing.find({owner: user._id});
+    // console.log(userListings);
+    res.render("users/profile.ejs", {user, userListings}); 
+}
 
 module.exports.googleLogin = (req,res) =>{
     req.flash("success", "Welcome to Wanderlust");
